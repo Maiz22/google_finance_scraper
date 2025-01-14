@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from urllib.parse import urlencode
 import scrapy
+from gfinance_scraper.items import Stock
 
 if TYPE_CHECKING:
     from scrapy.http.response import Response
@@ -60,8 +61,8 @@ class GainersSpider(scrapy.Spider):
         """
         Gets all data from the single stock page.
         """
-        yield {
-            "title": response.css("div.zzDege::text").get(),
-            "cur_price": response.css("div.fxKbKc::text").get(),
-            "last_close_price": response.css("div.P6K39c::text").get(),
-        }
+        stock = Stock()
+        stock["name"] = response.css("div.zzDege::text").get()
+        stock["cur_price"] = response.css("div.fxKbKc::text").get()
+        stock["closing_price"] = response.css("div.P6K39c::text").get()
+        yield stock

@@ -6,7 +6,7 @@
 import scrapy
 
 
-class GfinanceScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class Stock(scrapy.Item):
+    name = scrapy.Field()
+    cur_price = scrapy.Field()
+    closing_price = scrapy.Field()

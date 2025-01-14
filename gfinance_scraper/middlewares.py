@@ -87,38 +87,6 @@ class GfinanceScraperDownloaderMiddleware:
         # - return a Response object
         # - return a Request object
         # - or raise IgnoreRequest
-        # spider.logger.info(
-        #    "Executing Middelware process response with status {}.".format(
-        #        response.status
-        #    )
-        # )
-        #
-        ## Check if the response is a redirect (302)
-        # if (
-        #    response.status == 302
-        #    and "consent.google.com" in response.headers.get("Location", b"").decode()
-        # ):
-        #    spider.logger.info("Redirect to consent page detected. Taking action.")
-        #
-        #    # Handle consent dynamically (e.g., by resubmitting a form or bypassing)
-        #    return FormRequest(
-        #        url=response.headers["Location"].decode(),
-        #        formdata={
-        #            "continue": request.url,
-        #            "gl": "DE",
-        #            "hl": "en-US",
-        #            "cm": "2",
-        #            "pc": "fgc",
-        #            "src": "1",
-        #            "set_sc": "true",
-        #            "set_aps": "true",
-        #            "set_eom": "false",
-        #        },
-        #        callback=spider.after_consent,  # Callback after resolving consent
-        #        dont_filter=True,  # Allow duplicate requests
-        #    )
-
-        # Default: Pass the response to the spider
         return response
 
     def process_exception(self, request, exception, spider):
