@@ -1,1 +1,4 @@
-/__pycache__
+__pycache__/
+/output/items.jsonl
+/output/items.csv
+

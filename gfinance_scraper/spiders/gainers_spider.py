@@ -9,10 +9,9 @@ if TYPE_CHECKING:
 
 class GainersSpider(scrapy.Spider):
     name = "gainers"
-    allowed_domains = "https://www.google.com"
-    start_urls = ["https://www.google.com/finance/markets/gainers"]
+    # start_urls = ["https://www.google.com/finance/markets/gainers"]
 
-    def give_consent(self, response: Response):
+    def start_requests(self):
         """
         Send a post request to give consent. With the continue
         key in the body, we will be redirected to the gainers page.
@@ -50,10 +49,19 @@ class GainersSpider(scrapy.Spider):
         )
 
     def parse(self, response: Response):
+        """
+        Extracts all links from the /gainers page.
+        """
+        links = response.xpath('//ul[@class="sbnBtf"]/li/a/@href').getall()
+        for link in links:
+            yield response.follow(link, callback=self.parse_single_page)
 
-        # check for redirect to consent page
-        if response.status == 302:
-            self.give_consent(response)
-        else:
-            for tag in response.xpath('//ul[@class="sbnBtf"]/li/a'):
-                yield {"href": tag.xpath("@href").get()}
+    def parse_single_page(self, response: Response):
+        """
+        Gets all data from the single stock page.
+        """
+        yield {
+            "title": response.css("div.zzDege::text").get(),
+            "cur_price": response.css("div.fxKbKc::text").get(),
+            "last_close_price": response.css("div.P6K39c::text").get(),
+        }
